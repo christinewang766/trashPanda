@@ -24,7 +24,7 @@ public class Main {
 
         // Configure Spark
         Spark.port(4567);
-        
+
         // Enable CORS
         Spark.before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
@@ -66,7 +66,7 @@ public class Main {
             try {
                 String username = req.params(":username");
                 System.out.println("Finding matches for: " + username);
-                
+
                 // This is a placeholder - implement actual matchmaking logic
                 // For testing purposes, return example match data
                 String exampleJson = "[{\"user\":{\"userName\":\"avi\",\"firstName\":\"Avi\"},\"distance\":2.5},{\"user\":{\"userName\":\"piyusha\",\"firstName\":\"Piyusha\"},\"distance\":4.8}]";
@@ -92,7 +92,7 @@ public class Main {
 
             return "OK";
         });
-        
+
         // Print server start message
         System.out.println("Server started on port " + Spark.port());
         System.out.println("API endpoints available at http://localhost:" + Spark.port());

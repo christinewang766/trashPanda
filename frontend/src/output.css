@@ -195,7 +195,8 @@ body {
 }
 .logo-text {
   font-family: 'Khula', sans-serif;
-  color: #3E8440;
+  color: #fffaee;
+  font-size:30px;
 }
 .nav-links {
   list-style-type: none;
@@ -608,3 +609,17 @@ html, body {
   .close-modal2:focus {
     outline: none;
   }
+
+      /* The bottom banner styling */
+      #bottom-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f2d5d2;
+        color: #3E8440;
+        text-align: center;
+        padding: 15px;
+        font-size: 16px;
+        z-index: 1000; /* Ensures it stays on top */
+      }
