@@ -1,8 +1,6 @@
-package com.trashpanda.User;
-import com.trashpanda.Location;
-import com.trashpanda.PasswordUtils;
+package com.trashpanda;
 import com.trashpanda.ShareList.ShareListEntry;
-import com.trashpanda.WantListEntry;
+import com.trashpanda.WantList.WantListEntry;
 
 import java.util.*;
 
