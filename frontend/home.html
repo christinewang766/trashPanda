@@ -123,15 +123,48 @@
             }
 
             resultsDiv.innerHTML = `
-        <ul style="list-style-type: none; padding-left: 0;">
-          ${data.map(entry => `
-            <li style="margin-bottom: 8px;">
-              <strong>${entry.item.name}</strong> – ${entry.qty} ${entry.item.qtyType}
-              ${entry.expirationDate ? `(Expires: ${entry.expirationDate})` : ""}
-            </li>
-          `).join("")}
-        </ul>
-      `;
+            <ul style="list-style-type: none; padding-left: 0;">
+                ${data.map(entry => `
+                    <li style="margin-bottom: 8px;">
+                        <strong>${entry.item.name}</strong> – ${entry.qty} ${entry.item.qtyType}
+                        ${entry.expirationDate ? `(Expires: ${entry.expirationDate})` : ""}
+                        <button class="delete-button" data-item-name="${entry.item.name}">&#x274c;</button>
+                    </li>
+                `).join("")}
+            </ul>
+        `;
+
+
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const itemName = e.target.getAttribute('data-item-name');
+                    if (confirm(`Are you sure you want to delete ${itemName}?`)) {
+                        try {
+                            const response = await fetch(`${URL_PREFIX}/sharelist`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    username: username,
+                                    item: { name: itemName },
+                                }),
+                            });
+
+                            if (response.ok) {
+                                alert(`${itemName} deleted successfully.`);
+                                e.target.closest('li').remove();
+                            } else {
+                                alert(`Error deleting ${itemName}`);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the item.');
+                        }
+                    }
+                });
+            });
         } catch (error) {
             console.error(error);
             resultsDiv.innerHTML = '<p>Error fetching data.</p>';
@@ -160,15 +193,49 @@
                 return;
             }
 
+
             resultsDiv.innerHTML = `
-        <ul style="list-style-type: none; padding-left: 0;">
-          ${data.map(entry => `
-            <li style="margin-bottom: 8px;">
-              <strong>${entry.item.name}</strong> – ${entry.qty} ${entry.item.qtyType}}
-            </li>
-          `).join("")}
-        </ul>
-      `;
+            <ul style="list-style-type: none; padding-left: 0;">
+                ${data.map(entry => `
+                    <li style="margin-bottom: 8px;">
+                        <strong>${entry.item.name}</strong> – ${entry.qty} ${entry.item.qtyType}
+                        <button class="delete-button-want" data-item-name="${entry.item.name}">&#x274c;</button>
+                    </li>
+                `).join("")}
+            </ul>
+        `;
+
+
+            const deleteButtons = document.querySelectorAll('.delete-button-want');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const itemName = e.target.getAttribute('data-item-name');
+                    if (confirm(`Are you sure you want to delete ${itemName}?`)) {
+                        try {
+                            const response = await fetch(`${URL_PREFIX}/wantlist`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    username: username,
+                                    item: { name: itemName },
+                                }),
+                            });
+
+                            if (response.ok) {
+                                alert(`${itemName} deleted successfully.`);
+                                e.target.closest('li').remove();
+                            } else {
+                                alert(`Error deleting ${itemName}`);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the item.');
+                        }
+                    }
+                });
+            });
         } catch (error) {
             console.error(error);
             resultsDiv.innerHTML = '<p>Error fetching data.</p>';
@@ -196,35 +263,26 @@
     // Prevent form from refreshing the page on submit
     document.getElementById('postForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        // alert("New post created!"); // Handle form submission here'
-        // const foodName = document.getElementById("foodName");
-        // const food = foodName.value;
-        // const expiryDate = document.getElementById("expiryDate").value;
-        // const date = expiryDate.value;
-        // const quantity = document.getElementById("quantity").value;
-        // const quant = quantity.value;
-        // const newListItem = document.createElement('li');
-        // newListItem.textContent = `${food}, ${date}, ${quant}`;
 
-        // Create a new list item with food details
+        // Get the input values from the form
+        const foodName = document.getElementById("foodName");
+        const quantity = document.getElementById("quantity");
+        const userList = document.getElementById("userList");  // Make sure to append the list to the correct element
+
         const newListItem = document.createElement('li');
 
         // Create a sublist for each food entry with its details
         const sublist = document.createElement('ul');
 
-        // Add list items for food name, expiry date, and quantity
+        // Add list items for food name and quantity
         const foodNameItem = document.createElement('li');
-        foodNameItem.textContent = `${foodName.value}`;
-
-        const expiryDateItem = document.createElement('li');
-        expiryDateItem.textContent = `Expiry Date: ${expiryDate.value}`;
+        foodNameItem.textContent = foodName.value;
 
         const quantityItem = document.createElement('li');
-        quantityItem.textContent = `Amount: ${quantity.value}`;
+        quantityItem.textContent = quantity.value;
 
         // Append the details to the sublist
         sublist.appendChild(foodNameItem);
-        sublist.appendChild(expiryDateItem);
         sublist.appendChild(quantityItem);
 
         // Append the sublist to the new list item
@@ -232,6 +290,8 @@
 
         // Append the new list item to the list
         userList.appendChild(newListItem);
+
+        // Hide modal after submission
         modal.classList.add('hidden');
     });
 
