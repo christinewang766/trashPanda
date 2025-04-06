@@ -190,12 +190,15 @@ const URL_PREFIX = 'http://localhost:4567';
         document.getElementById('summary').classList.remove('hidden');
     }
 
-    window.onload = function() {
-        const username = localStorage.getItem('username');
-        if (!username) {
-            document.getElementById('popup').style.display = 'flex';
-        }
-    };
+window.onload = function() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('popup').style.display = 'none';
+    } else {
+        document.getElementById('popup').style.display = 'flex';
+    }
+};
+
 
 function handleLogin(event) {
     event.preventDefault();

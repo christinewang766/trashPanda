@@ -96,6 +96,8 @@
     Did you know? That 1 in 4 people in Canada are food insecure. Lets help be part of the solution!
   </div>
     <script>
+        const URL_PREFIX = 'http://localhost:4567';
+
         async function getShareList() {
             const username = localStorage.getItem('username');
 
@@ -105,7 +107,7 @@
                 console.log('No user logged in');
             }
 
-            const resultsDiv = document.getElementById('share-list-results');
+            const resultsDiv = document.getElementById('userList2');
 
             if (!username) {
                 resultsDiv.innerHTML = '<p>Please enter a username.</p>';
@@ -113,7 +115,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:4567/sharelist/${username}`);
+                const response = await fetch(`${URL_PREFIX}/sharelist/${username}`);
                 if (!response.ok) throw new Error("Failed to fetch share list");
 
                 const data = await response.json();
@@ -256,11 +258,6 @@
         userList2.appendChild(newListItem2);
         modal2.classList.add('hidden');
         });
-
-
-
-
-
 
     </script>
 
